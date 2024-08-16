@@ -30,7 +30,9 @@ class DBEDAssign2():
 
     def show_all(self):
         """Select all rows in the database's pcode table and return it as a list to the user"""
-
+        query ="SELECT * from pcode;"
+        self.cursor.execute(query,)
+        return self.cursor.fetchall()
 
     def select_by_pcode(self,pcode):
         """Perform a SELECT * query using the pcode parameter for postcode. Returns the query
@@ -39,7 +41,9 @@ class DBEDAssign2():
 
     def insert_data(self,pcode,locality,state):
         """Insert data into the database"""
-
+        query ="select * from pcode where postcode = %s or postcode = %s"
+        self.cursor.execute(query,)
+        self.cursor.execute(query,("2000","2001","2002","2003"));
 
     def readData(self,fname):
         """Read in the data from the CSV datafile called fname and put it into the database

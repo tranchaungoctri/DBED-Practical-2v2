@@ -5,6 +5,7 @@ import math
 # Student ID:
 # Name:
 
+
 class DBEDAssign2():
     def __init__(self,name):
         self.name=name
