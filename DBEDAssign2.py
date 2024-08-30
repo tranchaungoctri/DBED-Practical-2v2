@@ -57,9 +57,10 @@ class DBEDAssign2():
 
             # Your code here to insert the data
             for row in csv:
-               if len(row) == 4:
-                _, pcode, locality, state = row
-                # inset data
+                pcode = row[0]
+                locality = row[1]
+                state = row[2]
+
                 self.insert_data(pcode, locality, state)
 
             #Commit
@@ -70,22 +71,21 @@ class DBEDAssign2():
         Takes no parameters and returns a single floating point number that is the
         total entropy of the fourth column.
         """
-        # Query to count occurrences of each digit in the fourth position
-        query = """
-        SELECT SUBSTRING(postcode, 4, 1) AS digit, COUNT(*) AS count
-        FROM pcode
-        GROUP BY digit;
-        """
-        self.cursor.execute(query)
-        counts = self.cursor.fetchall()
+        counts = {}
 
-        # Calculate total number of postcodes
-        total = sum(count for _, count in counts)
+        self.cursor.execute("SELECT SUBSTRING(postcode, 4, 1) FROM pcode")
+        results = self.cursor.fetchall()
 
-        # Calculate frequencies and entropy
-        entropy = 0
-        for digit, count in counts:
-            probability = count / total
-            entropy -= probability * math.log2(probability)
+        for row in results:
+            digit = row[0]
+            if digit.isdigit():
+                counts[digit] += 1
+
+        total = sum(counts.values())
+        entropy = 0.0
+        for count in counts.values():
+            if count > 0:
+                probability = count / total
+                entropy -= probability * math.log2(probability)
 
         return entropy
