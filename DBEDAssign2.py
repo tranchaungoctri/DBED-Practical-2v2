@@ -52,6 +52,9 @@ class DBEDAssign2():
         Takes a single string parameter and does not return any values.
         IMPORTANT: you must call syncDB before exiting or your changes won't stick!"""
         with open('./'+fname,"r") as csv:
+            # Skip the header
+            csv.readline()
+
             # Your code here to insert the data
             for row in csv:
                 columns = row.strip().split(',')
@@ -87,8 +90,9 @@ class DBEDAssign2():
 
         entropy = 0.0
         for num in counts:
-            probability = num/total
-            entropy -= probability * math.log2(probability)
+            if num > 0:
+                probability = num/total
+                entropy -= probability * math.log2(probability)
 
         # Return the total entropy
         return entropy
