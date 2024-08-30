@@ -57,14 +57,15 @@ class DBEDAssign2():
 
             # Your code here to insert the data
             for row in csv:
-                columns = row.strip().split(',')
+                columns = row.split(',')
                 # extract
+                id = columns[0]
                 pcode = columns[1]
                 locality = columns[2]
                 state = columns[3]
 
                 # inset data
-                self.insert_data(pcode, locality, state)
+                self.insert_data(id,pcode, locality, state)
 
             #Commit
             self.syncDB()
@@ -82,7 +83,7 @@ class DBEDAssign2():
 
         # Calculate the frequencies and total entropy
         for row in rows:
-            digit = row[0]
+            digit = row[1]
             if digit.isdigit():
                 counts[int (digit)] += 1
 
@@ -96,5 +97,3 @@ class DBEDAssign2():
 
         # Return the total entropy
         return entropy
-
-
