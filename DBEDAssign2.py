@@ -57,9 +57,11 @@ class DBEDAssign2():
 
             # Your code here to insert the data
             for row in csv:
-                pcode = row[1]
-                locality = row[2]
-                state = row[3]
+                columns = row.strip().split(',')
+                # extract
+                pcode = columns[1]
+                locality = columns[2]
+                state = columns[3]
 
                 self.insert_data(pcode, locality, state)
 
@@ -82,6 +84,10 @@ class DBEDAssign2():
                 counts[int(digit)] += 1
 
         total = sum(counts)
+        # Print debug information
+        print("Counts:", counts)
+        print("Total:", total)
+
         entropy = 0.0
         for count in counts:
             if count > 0:
