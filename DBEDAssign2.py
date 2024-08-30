@@ -57,9 +57,9 @@ class DBEDAssign2():
 
             # Your code here to insert the data
             for row in csv:
-                pcode = row[0]
-                locality = row[1]
-                state = row[2]
+                pcode = row[1]
+                locality = row[2]
+                state = row[3]
 
                 self.insert_data(pcode, locality, state)
 
@@ -71,21 +71,21 @@ class DBEDAssign2():
         Takes no parameters and returns a single floating point number that is the
         total entropy of the fourth column.
         """
-        counts = {}
+        counts = [0] * 10
 
         self.cursor.execute("SELECT SUBSTRING(postcode, 4, 1) FROM pcode")
-        results = self.cursor.fetchall()
+        rows = self.cursor.fetchall()
 
-        for row in results:
+        for row in rows:
             digit = row[0]
             if digit.isdigit():
-                counts[digit] += 1
+                counts[int(digit)] += 1
 
-        total = sum(counts.values())
+        total = sum(counts)
         entropy = 0.0
-        for count in counts.values():
+        for count in counts:
             if count > 0:
                 probability = count / total
-                entropy -= probability * math.log2(probability)
+                entropy -= (probability * math.log2(probability))
 
         return entropy
