@@ -41,9 +41,9 @@ class DBEDAssign2():
 
     def insert_data(self,pcode,locality,state):
         """Insert data into the database"""
-        query ="select * from pcode where postcode = %s or postcode = %s"
-        self.cursor.execute(query,)
-        self.cursor.execute(query,("2000","2001","2002","2003"));
+        query = "INSERT INTO pcode (postcode, locality, state) VALUES (%s, %s, %s);"
+        self.cursor.execute(query, (pcode, locality, state))
+        self.syncDB()
 
     def readData(self,fname):
         """Read in the data from the CSV datafile called fname and put it into the database
@@ -54,7 +54,14 @@ class DBEDAssign2():
             csv.readline()
 
             # Your code here to insert the data
+            for row in csv:
+                # extract
+                pcode = row[1]
+                locality = row[2]
+                state = row[3]
 
+                # inset data
+                self.insert_data(pcode, locality, state)
             csv.close()
             #Commit
             self.syncDB()
@@ -64,12 +71,24 @@ class DBEDAssign2():
         Takes no parameters and returns a single floating point number that is the
         total entropy of the fourth column.
         """
+        counts = [0] * 10
 
         # Scan the database for the counts
-
+        self.cursor.execute("SELECT SUBSTRING(postcode, 4, 1) FROM pcode")
+        rows = self.cursor.fetchall()
         # Calculate the frequencies and total entropy
+        for row in rows:
+            digit = row[1]
+            if digit.isdigit():
+                counts[int (digit)] += 1
+
+        total = sum(counts)
+        entropy = 0.0
+        for num in counts:
+            probability = num/total
+            entropy -= probability * math.log2(probability)
 
         # Return the total entropy
-
+        return entropy
 
 
