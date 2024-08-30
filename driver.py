@@ -3,7 +3,9 @@ import math
 from DBEDAssign2 import DBEDAssign2
 
 student_id = 'a1904209'
+
 d1 = DBEDAssign2(student_id)
+
 print("Setting up")
 d1.setUp()
 

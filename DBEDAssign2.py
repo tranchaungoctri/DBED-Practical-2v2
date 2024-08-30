@@ -51,6 +51,7 @@ class DBEDAssign2():
         """Read in the data from the CSV datafile called fname and put it into the database
         Takes a single string parameter and does not return any values.
         IMPORTANT: you must call syncDB before exiting or your changes won't stick!"""
+
         with open('./'+fname,"r") as csv:
             # Skip the header
             csv.readline()
@@ -84,10 +85,6 @@ class DBEDAssign2():
                 counts[int(digit)] += 1
 
         total = sum(counts)
-        # Print debug information
-        print("Counts:", counts)
-        print("Total:", total)
-
         entropy = 0.0
         for count in counts:
             if count > 0:
