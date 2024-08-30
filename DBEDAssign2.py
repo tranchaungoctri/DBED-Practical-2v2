@@ -57,15 +57,10 @@ class DBEDAssign2():
 
             # Your code here to insert the data
             for row in csv:
-                columns = row.split(',')
-                # extract
-                id = columns[0]
-                pcode = columns[1]
-                locality = columns[2]
-                state = columns[3]
-
+               if len(row) == 4:
+                _, pcode, locality, state = row
                 # inset data
-                self.insert_data(id,pcode, locality, state)
+                self.insert_data(pcode, locality, state)
 
             #Commit
             self.syncDB()
@@ -75,25 +70,22 @@ class DBEDAssign2():
         Takes no parameters and returns a single floating point number that is the
         total entropy of the fourth column.
         """
-        counts = [0] * 10
+        # Query to count occurrences of each digit in the fourth position
+        query = """
+        SELECT SUBSTRING(postcode, 4, 1) AS digit, COUNT(*) AS count
+        FROM pcode
+        GROUP BY digit;
+        """
+        self.cursor.execute(query)
+        counts = self.cursor.fetchall()
 
-        # Scan the database for the counts
-        self.cursor.execute("SELECT SUBSTRING(postcode, 4, 1) FROM pcode")
-        rows = self.cursor.fetchall()
+        # Calculate total number of postcodes
+        total = sum(count for _, count in counts)
 
-        # Calculate the frequencies and total entropy
-        for row in rows:
-            digit = row[1]
-            if digit.isdigit():
-                counts[int (digit)] += 1
+        # Calculate frequencies and entropy
+        entropy = 0
+        for digit, count in counts:
+            probability = count / total
+            entropy -= probability * math.log2(probability)
 
-        total = sum(counts)
-
-        entropy = 0.0
-        for num in counts:
-            if num > 0:
-                probability = num/total
-                entropy -= probability * math.log2(probability)
-
-        # Return the total entropy
         return entropy
