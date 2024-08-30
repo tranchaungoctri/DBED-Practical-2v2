@@ -66,6 +66,7 @@ class DBEDAssign2():
 
                 self.insert_data(pcode, locality, state)
 
+            csv.close()
             #Commit
             self.syncDB()
 
@@ -92,3 +93,5 @@ class DBEDAssign2():
                 entropy -= (probability * math.log2(probability))
 
         return entropy
+
+
