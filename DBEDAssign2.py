@@ -57,14 +57,15 @@ class DBEDAssign2():
 
             # Your code here to insert the data
             for row in csv:
+                columns = row.strip().split(',')
                 # extract
-                pcode = row[1]
-                locality = row[2]
-                state = row[3]
+                pcode = columns[1]
+                locality = columns[2]
+                state = columns[3]
 
                 # inset data
                 self.insert_data(pcode, locality, state)
-            csv.close()
+
             #Commit
             self.syncDB()
 
@@ -78,6 +79,7 @@ class DBEDAssign2():
         # Scan the database for the counts
         self.cursor.execute("SELECT SUBSTRING(postcode, 4, 1) FROM pcode")
         rows = self.cursor.fetchall()
+
         # Calculate the frequencies and total entropy
         for row in rows:
             digit = row[0]
