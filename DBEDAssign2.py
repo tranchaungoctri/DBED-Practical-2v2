@@ -58,9 +58,9 @@ class DBEDAssign2():
             # Your code here to insert the data
             for row in csv:
                 # extract
-                pcode = row.split(',')[1]
-                locality = row.split(',')[2]
-                state = row.split(',')[3]
+                pcode = row[1]
+                locality = row[2]
+                state = row[3]
 
                 # inset data
                 self.insert_data(pcode, locality, state)
@@ -85,7 +85,7 @@ class DBEDAssign2():
                 counts[int (digit)] += 1
 
         total = sum(counts)
-        
+
         entropy = 0.0
         for num in counts:
             probability = num/total
