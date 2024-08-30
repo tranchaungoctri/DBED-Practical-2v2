@@ -37,7 +37,9 @@ class DBEDAssign2():
     def select_by_pcode(self,pcode):
         """Perform a SELECT * query using the pcode parameter for postcode. Returns the query
         result as a list object."""
-
+        query = "SELECT * FROM pcode WHERE postcode = %s;"
+        self.cursor.execute(query, (pcode,))
+        return self.cursor.fetchall()
 
     def insert_data(self,pcode,locality,state):
         """Insert data into the database"""
@@ -56,9 +58,9 @@ class DBEDAssign2():
             # Your code here to insert the data
             for row in csv:
                 # extract
-                pcode = row[1]
-                locality = row[2]
-                state = row[3]
+                pcode = row.split(',')[1]
+                locality = row.split(',')[2]
+                state = row.split(',')[3]
 
                 # inset data
                 self.insert_data(pcode, locality, state)
@@ -78,11 +80,12 @@ class DBEDAssign2():
         rows = self.cursor.fetchall()
         # Calculate the frequencies and total entropy
         for row in rows:
-            digit = row[1]
+            digit = row[0]
             if digit.isdigit():
                 counts[int (digit)] += 1
 
         total = sum(counts)
+        
         entropy = 0.0
         for num in counts:
             probability = num/total
