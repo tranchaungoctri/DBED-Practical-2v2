@@ -45,7 +45,6 @@ class DBEDAssign2():
         """Insert data into the database"""
         query = "INSERT INTO pcode (postcode, locality, state) VALUES (%s, %s, %s);"
         self.cursor.execute(query, (pcode, locality, state))
-        self.syncDB()
 
     def readData(self,fname):
         """Read in the data from the CSV datafile called fname and put it into the database
